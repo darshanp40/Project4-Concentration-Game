@@ -1,0 +1,14 @@
+{
+  "name": "cashcare",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "dev": "lite-server"
+  },
+  "author": "cashcare",
+  "license": "ISC",
+  "devDependencies": {
+    "lite-server": "^2.3.0"
+  }
+}
