@@ -63,10 +63,11 @@ h1 {
     justify-content: center;
     align-items: center;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+    transition: linear .4s;
 }
 
 .deck .card.open {
-    transform: rotateY(0);
+    transform: rotateY( 180deg );
     background: #02b3e4;
     cursor: default;
 }
@@ -74,11 +75,26 @@ h1 {
 .deck .card.show {
     font-size: 33px;
 }
-
+@-webkit-keyframes shake {
+    from {
+       -webkit-transform: rotate(10deg);
+    }
+    to {
+      -webkit-transform-origin:center center;
+      -webkit-transform: rotate(-10deg);
+    }
+}
 .deck .card.match {
     cursor: default;
+    animation:shake 0.1s ease-in-out 0.1s 3 alternate;
+    -webkit-animation: shake 0.1s ease-in-out 0.1s 3 alternate;
     background: #02ccba;
     font-size: 33px;
+}
+.deck .card.mismatch {
+    animation:shake 0.1s ease-in-out 0.1s 3 alternate;
+    -webkit-animation: shake 0.1s ease-in-out 0.1s 3 alternate;
+    background-color: #ff0000;
 }
 
 /*
@@ -106,4 +122,8 @@ h1 {
 .score-panel .restart {
     float: right;
     cursor: pointer;
+}
+
+.hidden {
+    display: none;
 }

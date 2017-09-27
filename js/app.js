@@ -62,13 +62,16 @@ function createGameHTML() {
         HTMLChunk,
         arrElements,
         matchedElements = 1,
-        currentOject;
+        firstObject,
+        secondObject,
+        moves = 0,
+        matches = 0;
 
     for (var index = 0; index < arrCardIcons.length * 2; index++) {
         arrCardObjects[index] = new Card(arrCardIcons[index % arrCardIcons.length]);
     }
     arrCardObjects = shuffle(arrCardObjects);
-    
+    console.log(arrCardObjects);
     HTMLChunk = arrCardObjects.map(function (obj) {
         return obj.HTML;
     }).join("");
@@ -81,37 +84,78 @@ function createGameHTML() {
     }
 
     function addClickEvent(obj) {
+        var arrStars;
         obj.addEventListener('click', function(e) {
-            var firstCard;
-            if(this.className.indexOf('match') > -1) {
-                return;
-            }
-            if(this.className.indexOf('show open') > -1) {
-                return;
-            }
-            if(this.className.indexOf('show open') === -1) {
-                this.className += ' show open';
-            }
-        
-            if(!currentOject) {
-                currentOject = this;
-            } else {
-                setTimeout(function() {}, 2000);
-                firstCard = currentOject.children[0].className.replace("fa ", "");
-                if(firstCard === this.children[0].className.replace("fa ", "")) {
-                    currentOject.className = currentOject.className.replace(" show open", "") + " match"; 
-                    this.className = currentOject.className.replace(" show open", "") + " match";
-                } else {
-                    currentOject.className = currentOject.className.replace(" show open", ""); 
-                    this.className = currentOject.className.replace(" show open", "");
+            if(!secondObject) {
+                if(this.className.indexOf('match') > -1) {
+                    return;
                 }
-                currentOject = "";
+                if(this.className.indexOf('show open') > -1) {
+                    return;
+                }
+                if(this.className.indexOf('show open') === -1) {
+                    this.className += ' show open';
+                }
+            
+                if(!firstObject) {
+                    firstObject = this;
+                } else {
+                    moves++;
+                    arrStars = document.getElementsByClassName('fa-star');
+                    if(arrStars.length) {
+                        if(moves > 3) {
+                            arrStars[0].className = arrStars[0].className.replace('fa-star','fa-star-o');
+                        } else if(moves > 2) {
+                            arrStars[1].className = arrStars[1].className.replace('fa-star','fa-star-o');
+                        } else if(moves > 1) {
+                            arrStars[2].className = arrStars[2].className.replace('fa-star','fa-star-o');
+                        }
+                    }
+                    
+                    document.getElementsByClassName('moves')[0].innerHTML = moves;
+                    secondObject = this;
+                    setTimeout(function() {
+                        checkCards();
+                        if(matches === 8) {
+                            showSuccess();
+                        }
+                    }, 300);
+                }
             }
         });   
+    }
+    function showSuccess() {
+        alert('success');
+    }
+    function checkCards() {
+        var firstCard = firstObject.children[0].className.replace("fa ", ""),
+            secondCard = secondObject.children[0].className.replace("fa ", "");
+        if(firstCard === secondCard) {
+            firstObject.className = firstObject.className.replace(" show open", "") + " match"; 
+            secondObject.className = secondObject.className.replace(" show open", "") + " match";
+            matches++;
+            firstObject = "";
+            secondObject = "";
+        } else {
+            firstObject.className += " mismatch";
+            secondObject.className += " mismatch"; 
+            window.setTimeout(function(){
+                firstObject.className = "card"; 
+                secondObject.className = "card";
+                firstObject = "";
+                secondObject = "";
+            },500);
+        }
     }
 }
 createGameHTML();
 document.getElementsByClassName('restart')[0].addEventListener('click', function() {
+    var arrStars = document.getElementsByClassName('fa-star-o');
+    for (var index = 0; index < arrStars.length; index++) {
+        arrStars[index].className = arrStars[index].className.replace('fa-star-o','fa-star');
+        
+    }
+    document.getElementsByClassName('moves')[0].innerHTML = 0;
     createGameHTML();
 });
 })();
