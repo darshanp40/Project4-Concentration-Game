@@ -47,6 +47,17 @@ function shuffle(array) {
     this.HTML = this.createCard(icon);
     this.icon = icon;
  }
+ 
+ var matchedElements = 1,
+ firstObject,
+ secondObject,
+ moves = 0,
+ matches = 0,
+ ss = 0, 
+ mm = 0, 
+ hh = 0,
+ stars = 3,
+ intervalID;
 
  Card.prototype.createCard = function(cardIcon) {
      var cardHTML;
@@ -56,16 +67,11 @@ function shuffle(array) {
     return cardHTML;
  }
 
-function createGameHTML() {
+function createGame() {
     var arrCardIcons = ['fa-diamond','fa-paper-plane-o','fa-anchor','fa-bolt','fa-cube','fa-leaf','fa-bicycle','fa-bomb'],
         arrCardObjects = [],
         HTMLChunk,
-        arrElements,
-        matchedElements = 1,
-        firstObject,
-        secondObject,
-        moves = 0,
-        matches = 0;
+        arrElements;
 
     for (var index = 0; index < arrCardIcons.length * 2; index++) {
         arrCardObjects[index] = new Card(arrCardIcons[index % arrCardIcons.length]);
@@ -86,6 +92,9 @@ function createGameHTML() {
     function addClickEvent(obj) {
         var arrStars;
         obj.addEventListener('click', function(e) {
+            if(!intervalID) {
+                startTimer();
+            }
             if(!secondObject) {
                 if(this.className.indexOf('match') > -1) {
                     return;
@@ -101,14 +110,17 @@ function createGameHTML() {
                     firstObject = this;
                 } else {
                     moves++;
-                    arrStars = document.getElementsByClassName('fa-star');
+                    arrStars = document.getElementsByClassName('stars')[0].children;
                     if(arrStars.length) {
-                        if(moves > 3) {
-                            arrStars[0].className = arrStars[0].className.replace('fa-star','fa-star-o');
-                        } else if(moves > 2) {
-                            arrStars[1].className = arrStars[1].className.replace('fa-star','fa-star-o');
-                        } else if(moves > 1) {
-                            arrStars[2].className = arrStars[2].className.replace('fa-star','fa-star-o');
+                        if(moves > 20) {
+                            stars = 0;
+                            arrStars[0].children[0].className = 'fa fa-star-o';
+                        } else if(moves > 16) {
+                            stars = 1;
+                            arrStars[1].children[0].className = 'fa fa-star-o';
+                        }else if(moves > 12) {
+                            stars = 2;
+                            arrStars[2].children[0].className = 'fa fa-star-o';
                         }
                     }
                     
@@ -123,9 +135,6 @@ function createGameHTML() {
                 }
             }
         });   
-    }
-    function showSuccess() {
-        alert('success');
     }
     function checkCards() {
         var firstCard = firstObject.children[0].className.replace("fa ", ""),
@@ -148,14 +157,50 @@ function createGameHTML() {
         }
     }
 }
-createGameHTML();
-document.getElementsByClassName('restart')[0].addEventListener('click', function() {
-    var arrStars = document.getElementsByClassName('fa-star-o');
+
+function showSuccess() {
+    setTimeout(function() {
+        document.getElementById('stars-count').innerHTML = stars;
+        document.getElementsByClassName('success-message')[0].className = "success-message";
+        document.getElementsByClassName('container')[0].className = "hidden";
+        document.getElementsByClassName('moves')[1].innerHTML = moves;
+    }, 500);
+    
+}
+
+function resetGame() {
+    var arrStars = document.getElementsByClassName('stars')[0].children;
     for (var index = 0; index < arrStars.length; index++) {
-        arrStars[index].className = arrStars[index].className.replace('fa-star-o','fa-star');
-        
+        arrStars[index].children[0].className = 'fa fa-star';
     }
     document.getElementsByClassName('moves')[0].innerHTML = 0;
-    createGameHTML();
+    createGame();
+}
+setTimeout(function() {
+    document.getElementsByClassName('circle-loader')[0].className += ' load-complete';
+    document.getElementsByClassName('checkmark')[0].className += ' show'; 
+},1000);
+
+function startTimer() {
+   return setInterval(function() {
+        ss++;
+        if(ss === 60) {
+            ss = 0;
+            mm++;
+            if(mm === 60) {
+                mm = 0;
+                hh++;
+            }
+        }
+        time = ("0" + hh).slice(-2) + ":" + ("0" + mm).slice(-2) + ":" + ("0" + ss).slice(-2);
+        document.getElementsByClassName("time")[0].innerHTML = time;
+        
+    },1000);
+}
+
+document.getElementsByClassName('restart')[0].addEventListener('click', function() {
+    resetGame();
 });
+
+createGame();
 })();

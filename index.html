@@ -39,8 +39,10 @@
         		<li><i class="fa fa-star"></i></li>
         	</ul>
 
-        	<span class="moves">0</span> Moves
-
+            <span class="moves">0</span> Moves
+            <div class="timer">
+                Time: <span class="time">00:00:00</span>
+            </div>
             <div class="restart">
         		<i class="fa fa-repeat"></i>
         	</div>
@@ -50,7 +52,15 @@
             
         </ul>
     </div>
-
+    <div class="success-message hidden">
+        <div class="circle-loader">
+            <div class="checkmark draw"></div>
+        </div>
+        <h2>Congratulation! You Won!</h2>
+        <p>With <span class="moves"></span> Moves and <span id="stars-count"></span> Stars</p>
+        <p>Wooooooo!</p>
+        <a href="/" class="button">Play again!</a>
+    </div>
     <script src="js/app.js"></script>
 </body>
 </html>
