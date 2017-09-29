@@ -26,12 +26,12 @@
     <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-
+    <!-- Main Container for the game -->
     <div class="container">
         <header>
             <h1>Matching Game</h1>
         </header>
-
+        <!-- Stars container -->
         <section class="score-panel">
         	<ul class="stars">
         		<li><i class="fa fa-star"></i></li>
@@ -47,16 +47,19 @@
         		<i class="fa fa-repeat"></i>
         	</div>
         </section>
-
+        <!-- container showing all the cards -->
         <ul class="deck">
-            
+
         </ul>
     </div>
+
+    <!-- Container for showing success message -->
     <div class="success-message hidden">
         <div class="circle-loader">
             <div class="checkmark draw"></div>
         </div>
         <h2>Congratulation! You Won!</h2>
+        <p>You completed the game in <span id="complete-time"></span></p>
         <p>With <span class="moves"></span> Moves and <span id="stars-count"></span> Stars</p>
         <p>Wooooooo!</p>
         <a href="/" class="button">Play again!</a>
