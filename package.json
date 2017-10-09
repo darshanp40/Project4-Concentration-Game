@@ -1,12 +1,12 @@
 {
-  "name": "cashcare",
+  "name": "darshan",
   "version": "1.0.0",
   "description": "",
   "main": "",
   "scripts": {
     "dev": "lite-server"
   },
-  "author": "cashcare",
+  "author": "darshan",
   "license": "ISC",
   "devDependencies": {
     "lite-server": "^2.3.0"
